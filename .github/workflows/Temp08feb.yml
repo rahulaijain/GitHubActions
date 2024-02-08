@@ -11,6 +11,6 @@ jobs:
       - name: Deploy to VM path
         run: |
           C:\Windows\system32\inetsrv\appcmd stop site /site.name:"WebApp07Feb"
-          timeout 30
+          ping -n 10 127.0.0.1
           xcopy /s /y .\mycode\* C:\inetpub\wwwroot\WebApp07Feb
           C:\Windows\system32\inetsrv\appcmd start site /site.name:"WebApp07Feb"
