@@ -43,4 +43,6 @@ jobs:
 
       - name: Deploy to VM path
         run: |
-          xcopy /s /y .\mycode\* C:\inetpub\wwwroot\WebApp07Feb          
+          %windir%\system32\inetsrv\appcmd stop site /site.name:"WebApp07Feb"
+          xcopy /s /y .\mycode\* C:\inetpub\wwwroot\WebApp07Feb
+          %windir%\system32\inetsrv\appcmd start site /site.name:"WebApp07Feb"
