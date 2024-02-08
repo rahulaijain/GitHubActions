@@ -44,5 +44,6 @@ jobs:
       - name: Deploy to VM path
         run: |
           C:\Windows\system32\inetsrv\appcmd stop site /site.name:"WebApp07Feb"
+          del /s /q C:\inetpub\wwwroot\WebApp07Feb
           xcopy /s /y .\mycode\* C:\inetpub\wwwroot\WebApp07Feb
           C:\Windows\system32\inetsrv\appcmd start site /site.name:"WebApp07Feb"
