@@ -1,0 +1,16 @@
+name: Temp deploy to Azure VM
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: RahulVM
+      
+    steps:
+      - name: Deploy to VM path
+        run: |
+          C:\Windows\system32\inetsrv\appcmd stop site /site.name:"WebApp07Feb"
+          del /s C:\inetpub\wwwroot\WebApp07Feb
+          copy /s .\mycode\* C:\inetpub\wwwroot\WebApp07Feb
+          C:\Windows\system32\inetsrv\appcmd start site /site.name:"WebApp07Feb"
