@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ./myapp
+          path: ./dotnet/myapp
 
   deploy:
     runs-on: RahulVM
