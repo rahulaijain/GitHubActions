@@ -40,3 +40,9 @@ jobs:
         with:
           name: .net-app
           path: mycode
+
+      - name: Deploy to VM path
+        run: |
+          iisreset /stop
+          xcopy /s /y .\mycode\* C:\inetpub\wwwroot\WebApp07Feb
+          iisreset /start
