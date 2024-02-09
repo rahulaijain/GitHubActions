@@ -1,0 +1,48 @@
+name: Build and deploy to Azure VM
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: GitHubDemoVM
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        working-directory: ./dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        working-directory: ./dotnet
+        run: dotnet publish -c Release -o ./myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ./dotnet/myapp
+
+  deploy:
+    runs-on: GitHubDemoVM
+    needs: build
+      
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+          path: mycode
+
+      - name: Deploy to VM path
+        run: |
+          iisreset /stop
+          xcopy /s /y .\mycode\* C:\inetpub\wwwroot\GitHubActionDemo
+          iisreset /start
