@@ -1,4 +1,4 @@
-name: Build and deploy to Azure VM
+name: Build and deploy to GitHubDemoVM
 
 on:
   workflow_dispatch:
