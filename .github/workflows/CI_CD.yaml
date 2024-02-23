@@ -50,7 +50,12 @@ jobs:
           iisreset /start
 
       - name: Display Secret Value
-        run: echo "The secret value of DEVSECRETKEY is ${{ secrets.DEVSECRETKEY }}
+        run: echo "The secret value of DEVSECRETKEY is ${{ secrets.DEVSECRETKEY }}"
+
+      - name: Copy secret value in a text file. 
+        run: |
+          echo ${{ secrets.APIKEY }} >> api.txt
+          xcopy /y api.txt ${{ vars.sitePath }}
 
   QA_Deployment:
     runs-on: GitHubDemoVM
