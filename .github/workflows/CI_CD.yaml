@@ -1,0 +1,88 @@
+name: CI CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: GitHubDemoVM
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        working-directory: ./dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        working-directory: ./dotnet
+        run: dotnet publish -c Release -o ./myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ./dotnet/myapp
+
+  Dev_Deployment:
+    runs-on: GitHubDemoVM
+    needs: build
+    environment:
+      name: 'Dev'
+      
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+          path: mycode
+
+      - name: Deploy to Dev IIS Instance
+        run: |
+          iisreset /stop
+          xcopy /s /y .\mycode\* ${{ vars.sitePath }}
+          iisreset /start
+
+  QA_Deployment:
+    runs-on: GitHubDemoVM
+    needs: Dev_Deployment
+    environment:
+      name: 'QA'
+      
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+          path: mycode
+
+      - name: Deploy to Dev IIS Instance
+        run: |
+          iisreset /stop
+          xcopy /s /y .\mycode\* ${{ vars.sitePath }}
+          iisreset /start
+
+  Prod_Deployment:
+    runs-on: GitHubDemoVM
+    needs: QA_Deployment
+    environment:
+      name: 'Prod'
+      
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+          path: mycode
+
+      - name: Deploy to Dev IIS Instance
+        run: |
+          iisreset /stop
+          xcopy /s /y .\mycode\* ${{ vars.sitePath }}
+          iisreset /start
