@@ -1,0 +1,19 @@
+name: Build Pipeline
+
+on: 
+  workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4.1.1
+        with: ${{ github.repository }}
+
+      - name: Dotnet build
+        run: dotnet build
+
+      - name: Publish artifacts
+        run: dotnet publish
+        
