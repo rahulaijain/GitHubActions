@@ -9,7 +9,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4.1.1
-        with: ${{ github.repository }}
 
       - name: Dotnet build
         run: dotnet build
