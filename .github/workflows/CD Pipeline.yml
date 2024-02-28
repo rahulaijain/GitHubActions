@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: CI build pipeline
     branches: [master,develop]
+    types: [completed]
   workflow_dispatch:
 
 jobs:
@@ -14,6 +15,7 @@ jobs:
         uses: actions/download-artifact@v4.1.3
         with:
           name: artifact
+          workflow: CI build pipeline
           path: build_artifacts
           
       - name: Deploy_to_test_path
