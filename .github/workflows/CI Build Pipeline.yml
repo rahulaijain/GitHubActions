@@ -1,0 +1,24 @@
+name: CI build pipeline
+
+on:
+  push: 
+    branches:
+      master
+      
+  workflow_dispatch:
+
+jobs:   
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4.1.1
+
+      - name: dotnet build
+        working-directory: ./dotnet
+        run: dotnet build 
+
+      - name: dotnet publish
+        working-directory: ./dotnet
+        run: dotnet publish
+  
