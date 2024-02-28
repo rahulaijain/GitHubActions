@@ -12,10 +12,10 @@ jobs:
     runs-on: VM1
     steps:
       - name: Download build artifact
-        uses: actions/download-artifact@v4.1.3
+        uses: dawidd6/action-download-artifact@v3
         with:
           name: artifact
-          workflow: CI build pipeline
+          workflow: CI Build Pipeline.yml
           path: build_artifacts
           
       - name: Deploy_to_test_path
