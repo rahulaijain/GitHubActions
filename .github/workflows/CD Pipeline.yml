@@ -20,6 +20,6 @@ jobs:
           
       - name: Deploy_to_test_path
         run: |
-          xcopy /s /y build_artifacts C:/TestPath
+          xcopy /s /y ./build_artifacts/* C:/TestPath
   
     
